@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Data;
+using System.Xml;
+using System.Collections.Generic;
 
 namespace ConsolProject
 {
 	public interface IDataProvider
 	{
-		 void getElementsData(String query);
-
+		List<IViewPresentingDataRow> getElementsDataTable(List<SearchQuery> query);
 	}
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 
@@ -19,7 +19,7 @@ namespace ConsolProject
 
 		private void registerServices()
 		{
-			serviceDictionary[typeof(IDataProvider)] = new DataProviderImplementation();//DataProviderImplementation;
+			serviceDictionary[typeof(IDataProvider)] = new LocalDataProviderImplementation();//DataProviderImplementation;
 		}
 
 
