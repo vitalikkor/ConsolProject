@@ -78,4 +78,30 @@ namespace ConsolProject
 	//      |----price
 	//      |----totalPrice
 	//      |----separator
+
+	public enum BackPanelsFamily
+	{
+		ordinal,
+		middle
+	}
+
+	public enum BackPanelType
+	{
+		plain,
+		wiredType1,
+		wiredType2,
+		perforation,
+		MDFpanel,
+		DSPpanel
+	}
+
+	public enum Material
+	{
+		MDF,
+		DSP,
+		wood,
+		metall,
+		wireMetall,
+		glass
+	}
 }
