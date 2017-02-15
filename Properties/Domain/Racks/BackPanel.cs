@@ -5,13 +5,18 @@ namespace ConsolProject
 {
 	public class BackPanel: ElementNomenclature
 	{
-		protected String rootAbriviation = "KL ST";
+		override protected String rootAbriviation
+		{
+			get { return "KL ST"; }
+		}
+
+		public override ColorRall color { get; set; }
+
+		public override SizeLWH size { get; }
 
 		private BackPanelsFamily family;
 		private BackPanelType type;
-		private SizeLWH size;
-		private ColorRall color;
-		private Material selfMaterial;
+		protected override Material selfMaterial { get;}
 
 		public BackPanel(BackPanelsFamily family, BackPanelType type, SizeLWH size, ColorRall color)
 		{
@@ -43,30 +48,24 @@ namespace ConsolProject
 		{ 
 		}
 
-		public override List<SearchQuery> getSearchQuery()
-		{
-			String prefix = "";
-			switch (this.family){
-				case BackPanelsFamily.middle:
-					prefix = "MD";
-					break;
-				case BackPanelsFamily.ordinal:
-					prefix = "ORD";
-					break;
+		public override List<SearchQuery> searchQuerys
+		{ get
+			{
+				String prefix = "";
+				switch (this.family)
+				{
+					case BackPanelsFamily.middle:
+						prefix = "MD";
+						break;
+					case BackPanelsFamily.ordinal:
+						prefix = "ORD";
+						break;
+				}
+				SearchQuery searchQuery = new SearchQuery(quryString: this.rootAbriviation + prefix, color: this.color);
+				return new List<SearchQuery>() { searchQuery };
 			}
-			SearchQuery searchQuery = new SearchQuery(quryString: rootAbriviation + prefix, color: color);
-			return new List<SearchQuery>() {searchQuery};
 		}
 
-		public override SizeLWH getSize()
-		{
-			return this.size;
-		}
-
-		public override Material getSelfMaterial()
-		{
-			return selfMaterial;
-		}
 
 		public static List<BackPanel> getBackPanelsSet(BackPanelsFamily family, BackPanelType type, SizeLWH size, ColorRall color)
 		{
@@ -75,7 +74,8 @@ namespace ConsolProject
 			foreach (int h in setOfHeights)
 			{
 				SizeLWH panelSize = new SizeLWH { H = h, L = size.L, W = size.W };
-				listOfBackPanels.Add(new BackPanel(family, type, panelSize, color));
+				BackPanel backPanel = new BackPanel(family, type, panelSize, color);
+				listOfBackPanels.Add(backPanel);
 
 			}
 			return listOfBackPanels;
@@ -83,10 +83,25 @@ namespace ConsolProject
 
 		protected static List<int> getSetOfHeights(BackPanelsFamily family, BackPanelType type, SizeLWH size)
 		{
-			
 			return new List<int>() { 300, 300, 300, 450 };
 		}
 
+		protected override List<ElementNomenclature> getElementsSatelits()
+		{
+			//this should be the list of all elements - satelits for each case of panel type
+			return new List<ElementNomenclature>() { };
+		}
+
+		public override void changeColorTo(ColorRall newColor)
+		{
+			base.changeColorTo(newColor);
+
+		}
+
+		public override List<IViewPresentingDataRow> generateViewPresentingRow()
+		{
+			return ServiceLocator.sharedInstance.getService<IDataProvider>().getElementsTableView(this.searchQuerys);
+		}
 
 	}
 }

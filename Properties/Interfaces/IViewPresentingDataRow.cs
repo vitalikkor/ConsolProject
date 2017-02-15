@@ -3,47 +3,45 @@ namespace ConsolProject
 {
 	public abstract class IViewPresentingDataRow
 	{
-		public abstract PresentingRowType getPresentingRowType();
+		public abstract PresentingRowType presentingRowType { get; set;}
 
-		public virtual String getArticle()
-		{
-			return String.Empty;
+		//this id should be unique getting from searching results
+		public abstract string id { get; }
+
+		//article getting from searching results
+		public abstract string article { get; }
+
+		//article getting from searching results
+		public abstract string name { get; }
+
+		public float price { get; set; } = 0;
+		public float discount { get; set; } = 0;
+		public string usersNotes { get; set; } = "";
+		public int quantity { get; set; } = 1;
+		public int multiplier { get; set; } = 1;
+
+		public int multipleQuantity
+		{ get
+			{
+				return quantity*multiplier;
+			}
 		}
-		public virtual String getName()
+
+		public virtual float getPrice()
 		{
-			return String.Empty;
+			return quantity*price;
 		}
-		public virtual String getDescription()
+		public virtual float getMultiplePrice()
 		{
-			return String.Empty;
+			return multipleQuantity * price;
 		}
-		public virtual  String getQuantity()
+		public virtual float getDiscountPrice()
 		{
-			return String.Empty;
+			return price*discount/100;
 		}
-		public virtual  String getMultipleQuantity()
+		public virtual float getMultipleDiscountPrice()
 		{
-			return String.Empty;
-		}
-		public virtual  String getDiscount()
-		{
-			return String.Empty;
-		}
-		public virtual  String getPrice()
-		{
-			return String.Empty;
-		}
-		public virtual  String getMultiplePrice()
-		{
-			return String.Empty;
-		}
-		public virtual String getDiscountPrice()
-		{
-			return String.Empty;
-		}
-		public virtual String getMultipleDiscountPrice()
-		{
-			return String.Empty;
+			return multiplier * price * discount / 100;
 		}
 	}
 }

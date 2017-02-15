@@ -5,17 +5,49 @@ namespace ConsolProject
 {
 	public abstract class ElementNomenclature
 	{
-	    String rootAbriviation = "Root";
 
-		private ColorRall color;
+		//main method which search throght database element by search query
+		abstract public List<IViewPresentingDataRow> generateViewPresentingRow();
 
-		public abstract SizeLWH getSize();
+		// abriviation is used when search element in database
+		abstract protected String rootAbriviation { get; }
 
-		public abstract List<SearchQuery> getSearchQuery();
+		// list of elements included this. Usual this is only one item
+		public abstract List<SearchQuery> searchQuerys { get; }
 
-		public abstract Material getSelfMaterial();
+		//color
+		public abstract ColorRall color { get; set; }
 
+		//Size which using in composing search query
+		public abstract SizeLWH size { get; }
 
+		//real material of element it can be unknown
+		protected abstract Material selfMaterial { get; }
 
+		//subelements of this elements
+		public virtual List<ElementNomenclature> elementsSatelits
+		{
+			get
+			{
+				if (elementsSatelits.Count == 0)
+				{
+					return getElementsSatelits();
+				}
+				else
+				{
+					return elementsSatelits;
+				}
+			}
+		}
+
+		protected virtual List<ElementNomenclature> getElementsSatelits()
+		{
+			return new List<ElementNomenclature>() { };
+		}
+
+		public virtual void changeColorTo(ColorRall newColor)
+		{
+			this.color = newColor;
+		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Xml;
 using System.Data.SqlClient;
@@ -12,7 +12,7 @@ namespace ConsolProject
 		}
 
 
-		List<IViewPresentingDataRow> IDataProvider.getElementsDataTable(List<SearchQuery> queries)
+		List<IViewPresentingDataRow> IDataProvider.getElementsTableView(List<SearchQuery> queries)
 		{
 			List<IViewPresentingDataRow> array = new List<IViewPresentingDataRow>();
 			//String connectionString =
@@ -21,8 +21,10 @@ namespace ConsolProject
 
 			//SqlDataAdapter dataAdapter = new SqlDataAdapter(this.composeSQLCommand(queries), connectionString);
 
-			IViewPresentingDataRow element = new ElementPresentingDataRow("1222-111-22", "wewe ererere eferer");
-			IViewPresentingDataRow element2 = new ElementPresentingDataRow("9999-181-32", "asawewe erasdadsferer");
+			IViewPresentingDataRow element = new ElementPresentingDataRow("uniq1", "1222-111-22", 
+			                    queries[0].quryString + " wewe ererere eferer " + queries[0].color.getColorAsString());
+			IViewPresentingDataRow element2 = new ElementPresentingDataRow("uniq2", "9999-181-32", 
+			                   queries[0].quryString + " asawewe erasdadsferer" + queries[0].color.getColorAsString());
 
 			array.AddRange(new IViewPresentingDataRow[]{ element, element2 });
 
