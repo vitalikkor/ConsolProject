@@ -20,7 +20,7 @@ namespace ConsolProject
 			                                                 type: BackPanelType.perforation, 
 			                                                 size: new SizeLWH { L = 1000, W = 500, H = 2235 }, 
 			                                                 color: new ColorRall());
-			
+			List < int > lists = BackPanel.getSetOfHeights(BackPanelsFamily.ordinal, BackPanelType.plain, 2235);
 			Console.WriteLine(dataRows[0].article + " " + dataRows[0].name);                                                
 		}
 	}

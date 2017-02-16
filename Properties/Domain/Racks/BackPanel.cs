@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsolProject
 {
@@ -16,6 +17,7 @@ namespace ConsolProject
 
 		private BackPanelsFamily family;
 		private BackPanelType type;
+
 		protected override Material selfMaterial { get;}
 
 		public BackPanel(BackPanelsFamily family, BackPanelType type, SizeLWH size, ColorRall color)
@@ -33,10 +35,14 @@ namespace ConsolProject
 					selfMaterial = Material.MDF;
 					break;
 				case BackPanelType.perforation:
+					selfMaterial = Material.metall;
+					break;
 				case BackPanelType.plain:
 					selfMaterial = Material.metall;
 					break;
 				case BackPanelType.wiredType1: 
+					selfMaterial = Material.wireMetall;
+					break;
 				case BackPanelType.wiredType2:
 					selfMaterial = Material.wireMetall;
 					break;
@@ -45,8 +51,7 @@ namespace ConsolProject
 
 		public BackPanel(BackPanelsFamily family, BackPanelType type, SizeLWH size):
 		this(family, type, size, new ColorRall())
-		{ 
-		}
+		{ }
 
 		public override List<SearchQuery> searchQuerys
 		{ get
@@ -69,8 +74,9 @@ namespace ConsolProject
 
 		public static List<BackPanel> getBackPanelsSet(BackPanelsFamily family, BackPanelType type, SizeLWH size, ColorRall color)
 		{
-			List<int> setOfHeights = getSetOfHeights(family: family, type: type, size: size);
+			
 			List<BackPanel> listOfBackPanels = new List<BackPanel>() { };
+			List<int> setOfHeights =BackPanel.getSetOfHeights(family: family, type: type, H: size.H);
 			foreach (int h in setOfHeights)
 			{
 				SizeLWH panelSize = new SizeLWH { H = h, L = size.L, W = size.W };
@@ -81,9 +87,43 @@ namespace ConsolProject
 			return listOfBackPanels;
 		}
 
-		protected static List<int> getSetOfHeights(BackPanelsFamily family, BackPanelType type, SizeLWH size)
+		private static List<int> permissibleHeights(BackPanelsFamily family, BackPanelType type)
 		{
-			return new List<int>() { 300, 300, 300, 450 };
+			switch (type)
+			{
+				case BackPanelType.DSPpanel:
+				case BackPanelType.MDFpanel:
+					return new List<int> {};
+				case BackPanelType.perforation:
+					return new List < int > { 150, 300, 450 };
+				case BackPanelType.plain:
+					return new  List < int > { 150, 300, 450 };
+				case BackPanelType.wiredType1:
+					return new  List < int >{ 300, 450, 900 };
+				case BackPanelType.wiredType2:
+					return new List<int> { 300, 450 };
+			}
+			return new List<int> { };
+		}
+		                                            
+		public static List<int> getSetOfHeights(BackPanelsFamily family, BackPanelType type, int H)
+		{
+			List<int> sortedHeigts = BackPanel.permissibleHeights( family, type).OrderByDescending( (int arg) => arg).ToList();
+			int iterateH = H;
+			List<int> setOfHeights = new List<int>();
+			foreach (int h in sortedHeigts)
+			{
+				if (iterateH >= h)
+				{
+					do
+					{
+						iterateH -= h;
+						setOfHeights.Add(h);
+
+					} while (iterateH >= h);
+				}
+			}
+			return setOfHeights;
 		}
 
 		protected override List<ElementNomenclature> getElementsSatelits()
