@@ -3,6 +3,7 @@ namespace ConsolProject
 {
 	public class SearchQuery
 	{
+		public int quantity = 1;
 		public SearchQuery(string quryString, ColorRall color, PreferedSearchType searchType = PreferedSearchType.byName)
 		{
 			this.quryString = quryString;

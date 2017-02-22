@@ -5,14 +5,32 @@ namespace ConsolProject
 {
 	public class OneSideRack: Rack
 	{
-		public OneSideRack()
+		public BackPanelType backPanelType;
+		public BackPanelsFamily backPanelFamily;
+		public SizeLWH size;
+		public ColorRall color;
+
+		public OneSideRack(BackPanelType backPanelType, BackPanelsFamily backPanelFamily, SizeLWH size, ColorRall color)
 		{
+			this.backPanelFamily = backPanelFamily;
+			this.backPanelType = backPanelType;
+			this.color = color;
+			this.size = size;
 		}
 
-		public override List<BackPanel> generateBackPanels(SizeLWH size, ColorRall color)
+		public override List<BackPanel> generateBackPanels()
 		{
-			BackPanel bp = new BackPanelPlain(size, color);
-			return new List<BackPanel>(){ bp};
+			List<BackPanel> lbp;
+			switch (backPanelType)
+			{
+				case BackPanelType.plain:
+					lbp = BackPanelPlain.getBackPanelsSet(this.size, this.color);
+					break;
+				default:
+					lbp = BackPanelPlain.getBackPanelsSet(this.size, this.color);
+					break;
+			}
+			return lbp;
 		}
 
 		public override List<string> generateBackLeg()

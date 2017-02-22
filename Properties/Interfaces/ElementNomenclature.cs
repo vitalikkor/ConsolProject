@@ -7,25 +7,22 @@ namespace ConsolProject
 	{
 
 		//main method which search throght database element by search query
-		abstract public List<IViewPresentingDataRow> generateViewPresentingRow();
+		abstract public List<IViewPresentingDataRow> generateViewPresentingRow(int multipleir);
 
 		// abriviation is used when search element in database
 		abstract protected String rootAbriviation { get; }
 
 		// list of elements included this. Usual this is only one item
-		public abstract List<SearchQuery> searchQuerys { get; }
+		public abstract List<SearchQuery> searchQuerys(int multiplier);
 
 		//color
-		public virtual ColorRall color 
-		{ 
-			get { return color;} 
-			set{
-				onChangeColor(color);
-			}
-		}
+		public virtual ColorRall color { get; set;}
+		public abstract void onChangeColor(ColorRall newColor);
+
+		public virtual int selfQuantity { get; set; } = 1;
 
 		//Size which using in composing search query
-		public abstract SizeLWH size { get; }
+		public virtual SizeLWH size { get; set; }
 
 		//real material of element it can be unknown
 		protected abstract Material selfMaterial { get; }
@@ -51,9 +48,6 @@ namespace ConsolProject
 			return new List<ElementNomenclature>() { };
 		}
 
-		public virtual void onChangeColor(ColorRall newColor)
-		{
-			this.color = newColor;
-		}
 	}
+	
 }

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ConsolProject
 {
-	public class BackPanelPlain: BackPanel
+	public class BackPanelPlain : BackPanel
 	{
 		//BackPanel properties
 		public override BackPanelsFamily family { get; } = BackPanelsFamily.ordinal;
@@ -15,36 +15,37 @@ namespace ConsolProject
 		{
 			get { return "KL ST"; }
 		}
+		public override ColorRall color { get; set; }
 
-		public override SizeLWH size { get; }
+		protected override Material selfMaterial { get; } = Material.metall;
 
-		protected override Material selfMaterial { get; }
+		public override int selfQuantity { get; set;}
 
 		public BackPanelPlain(SizeLWH panelSize, ColorRall color)
 		{
+			base.size = panelSize;
+			base.color = color;
 			this.color = color;
-			this.size = panelSize;
 		}
 
-		public override List<SearchQuery> searchQuerys
+		public override List<SearchQuery> searchQuerys(int multiplier)
 		{
-			get
-			{
 				String prefix = "ORDINAL";
-				SearchQuery searchQuery = new SearchQuery(quryString: this.rootAbriviation + prefix, color: this.color);
+				SearchQuery searchQuery = new SearchQuery(quryString: this.rootAbriviation + " " + 
+				                                          size.H.ToString() + " " + size.L.ToString() + " " + prefix + " ", color: this.color);
+				searchQuery.quantity = this.selfQuantity*multiplier;
 				return new List<SearchQuery>() { searchQuery };
-			}
 		}
 
-		public static List<BackPanelPlain> getBackPanelsSet(SizeLWH size, ColorRall color)
+		public static List<BackPanel> getBackPanelsSet(SizeLWH size, ColorRall color)
 		{
-
-			List<BackPanelPlain> listOfBackPanels = new List<BackPanelPlain>() { };
-			List<int> setOfHeights = BackPanelPlain.getSetOfHeights(H: size.H);
-			foreach (int h in setOfHeights)
+			List<BackPanel> listOfBackPanels = new List<BackPanel>() { };
+			Dictionary<int, int> setOfHeights = BackPanelPlain.getSetOfHeights(H: size.H);
+			foreach (KeyValuePair<int, int> item in setOfHeights)
 			{
-				SizeLWH panelSize = new SizeLWH { H = h, L = size.L, W = size.W };
+				SizeLWH panelSize = new SizeLWH { H = item.Key, L = size.L, W = size.W };
 				BackPanelPlain backPanel = new BackPanelPlain(panelSize, color);
+				backPanel.selfQuantity = item.Value;
 				listOfBackPanels.Add(backPanel);
 
 			}
@@ -56,21 +57,24 @@ namespace ConsolProject
 			return new List<int> { 150, 300, 450 };
 		}
 
-		public static List<int> getSetOfHeights(int H)
+		public static Dictionary<int , int> getSetOfHeights(int H)
 		{
 			List<int> sortedHeigts = BackPanelPlain.permissibleHeights().OrderByDescending((int arg) => arg).ToList();
 			int iterateH = H;
-			List<int> setOfHeights = new List<int>();
+			Dictionary<int, int>  setOfHeights = new Dictionary<int, int> ();
 			foreach (int h in sortedHeigts)
 			{
 				if (iterateH >= h)
 				{
+					int i = 0;
 					do
 					{
 						iterateH -= h;
-						setOfHeights.Add(h);
-
+						i++;
 					} while (iterateH >= h);
+					if (i > 0){
+						setOfHeights.Add(h, i);
+					}
 				}
 			}
 			return setOfHeights;
@@ -84,13 +88,13 @@ namespace ConsolProject
 
 		public override void onChangeColor(ColorRall newColor)
 		{
-			base.onChangeColor(newColor);
+			
 
 		}
 
-		public override List<IViewPresentingDataRow> generateViewPresentingRow()
+		public override List<IViewPresentingDataRow> generateViewPresentingRow(int multipleir)
 		{
-			return ServiceLocator.sharedInstance.getService<IDataProvider>().getElementsTableView(this.searchQuerys);
+			return ServiceLocator.sharedInstance.getService<IDataProvider>().getElementsTableView(this.searchQuerys(multipleir));
 		}
 	}
 }
