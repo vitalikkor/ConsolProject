@@ -3,18 +3,10 @@ using System.Collections.Generic;
 
 namespace ConsolProject
 {
-	public class Rack
+	public abstract class Rack
 	{
-		public Rack()
-		{
-		}
-
-		//interface
-		public List<IViewPresentingDataRow> composePresentingInvoiceElementsList()
-		{
-			//this should be a list of all elements
-			return new List<IViewPresentingDataRow>() { };
-		}
-
+		public abstract List<BackPanel> generateBackPanels(SizeLWH size, ColorRall color);
+		public abstract List<string> generateBackLeg();
+		public abstract List<string> generateFrontLeg();
 	}
 }

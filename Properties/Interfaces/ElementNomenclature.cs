@@ -16,7 +16,13 @@ namespace ConsolProject
 		public abstract List<SearchQuery> searchQuerys { get; }
 
 		//color
-		public abstract ColorRall color { get; set; }
+		public virtual ColorRall color 
+		{ 
+			get { return color;} 
+			set{
+				onChangeColor(color);
+			}
+		}
 
 		//Size which using in composing search query
 		public abstract SizeLWH size { get; }
@@ -45,7 +51,7 @@ namespace ConsolProject
 			return new List<ElementNomenclature>() { };
 		}
 
-		public virtual void changeColorTo(ColorRall newColor)
+		public virtual void onChangeColor(ColorRall newColor)
 		{
 			this.color = newColor;
 		}

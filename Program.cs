@@ -16,11 +16,11 @@ namespace ConsolProject
 			List<IViewPresentingDataRow> dataRows = ServiceLocator.sharedInstance.getService<IDataProvider>().getElementsTableView(searchArray);
 			//BackPanel bp = new BackPanel(family: BackPanelsFamily.ordinal, type: BackPanelType.perforation, size: new SizeLWH{L = 10, W = 10, H = 10 });
 
-			List<BackPanel> panelList = BackPanel.getBackPanelsSet(family: BackPanelsFamily.ordinal, 
-			                                                 type: BackPanelType.perforation, 
-			                                                 size: new SizeLWH { L = 1000, W = 500, H = 2235 }, 
-			                                                 color: new ColorRall());
-			List < int > lists = BackPanel.getSetOfHeights(BackPanelsFamily.ordinal, BackPanelType.plain, 2235);
+			//List<BackPanel> panelList = BackPanel.getBackPanelsSet(family: BackPanelsFamily.ordinal, 
+			//                                                 type: BackPanelType.perforation, 
+			//                                                 size: new SizeLWH { L = 1000, W = 500, H = 2235 }, 
+			//                                                 color: new ColorRall());
+			//List < int > lists = BackPanel.getSetOfHeights(BackPanelsFamily.ordinal, BackPanelType.plain, 2235);
 			Console.WriteLine(dataRows[0].article + " " + dataRows[0].name);                                                
 		}
 	}
