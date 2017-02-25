@@ -3,30 +3,38 @@ using System.Collections.Generic;
 
 namespace ConsolProject
 {
-	public abstract class Rack
+	public class Rack
 	{
-		public virtual int multiplier { get; set; } = 1;
-		public abstract List<BackPanel> generateBackPanels();
-		public abstract List<string> generateBackLeg();
-		public abstract List<string> generateFrontLeg();
+		public int multiplier { get; set; } = 1;
+		public SizeLWH size;
+		public List<BackPanel> backPanels { get; set;}
+		public List<string> backLegs { get; set; }
+		public List<string> frontLegs { get; set; }
+		public List<string> shelves { get; set;}
 
-		public virtual List<IViewPresentingDataRow> generateViewPresentingDataRow()
+
+		public List<IViewPresentingDataRow> generateViewPresentingDataRow()
 		{
 			List<IViewPresentingDataRow> rows = new List<IViewPresentingDataRow>();
-			foreach (BackPanel bp in generateBackPanels())
+			foreach (BackPanel bp in backPanels)
 			{
 				rows.AddRange(bp.generateViewPresentingRow(multiplier));
 			}
 
-			foreach (string bl in generateBackLeg())
-			{
-				//rows.AddRange(bl.generateViewPresentingRow());
-			}
+			//foreach (string bl in backLegs)
+			//{
+			//	//rows.AddRange(bl.generateViewPresentingRow());
+			//}
 
-			foreach (string bl in generateBackLeg())
-			{
-				//rows.AddRange(bl.generateViewPresentingRow());
-			}
+			//foreach (string bl in frontLegs)
+			//{
+			//	//rows.AddRange(bl.generateViewPresentingRow());
+			//}
+
+			//foreach (string bl in shelves)
+			//{
+			//	//rows.AddRange(bl.generateViewPresentingRow());
+			//}
 			return rows;
 		}
 	}

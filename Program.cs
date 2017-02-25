@@ -8,9 +8,15 @@ namespace ConsolProject
 		public static void Main(string[] args)
 		{
 			Console.WriteLine("Hello World!");
+			RackConfigurator configurator = new RackConfigurator();
+			configurator.rack.multiplier = 10;
+			configurator.backPanel.color = new ColorRall(Galvanic.zinc);
 
-			Rack oneSideRack = new OneSideRack(BackPanelType.plain, BackPanelsFamily.ordinal, new SizeLWH() { L = 1000, W = 500, H = 2235 }, new ColorRall(3000, ColorShader.mat));
-			oneSideRack.multiplier = 10;
+			IRackBuilder oneSideRackBilder = new OneSideRackBuilder(configurator);
+			RackCreator rackCreator = new RackCreator(oneSideRackBilder);
+			rackCreator.creatRack();
+			Rack oneSideRack = rackCreator.getRack();
+
 			List<IViewPresentingDataRow> rows = oneSideRack.generateViewPresentingDataRow();
 			foreach (IViewPresentingDataRow row in rows)
 			{

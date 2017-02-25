@@ -41,6 +41,14 @@ namespace ConsolProject
 		none,
 	}
 
+	public enum Galvanic
+	{
+		[Description("zinc")]
+		zinc,
+		[Description("chrome")]
+		chrome,
+	}
+
 	public enum ColorShader
 	{
 		[Description("mat")]

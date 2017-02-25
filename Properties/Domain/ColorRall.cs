@@ -2,15 +2,23 @@
 
 namespace ConsolProject
 {
+
+
 	public class ColorRall
 	{
-		public readonly int rallCode;
-		public readonly ColorShader colorShader;
+		public readonly int? rallCode;
+		public readonly ColorShader? colorShader;
+		public readonly Galvanic? galvanicType;
 
 		public ColorRall()
 		{
 			this.colorShader = ColorShader.semiMat;
 			this.rallCode = 9001;
+		}
+
+		public ColorRall(Galvanic galvanicType)
+		{
+			this.galvanicType = galvanicType;
 		}
 
 		public ColorRall(int code, ColorShader shader)
@@ -26,7 +34,14 @@ namespace ConsolProject
 
 		public String getColorAsString()
 		{
-			return this.rallCode.ToString() + colorShader.getDescription<ColorShader>();
+			if (rallCode == null || colorShader == null)
+			{
+				return this.galvanicType.getDescription<Galvanic>();
+			}
+			else
+			{
+				return this.rallCode.ToString() + colorShader.getDescription<ColorShader>();
+			}
 		}
 	}
 }
