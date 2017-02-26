@@ -9,7 +9,7 @@ namespace ConsolProject
 		public override string name { get; }
 		public override string article { get; }
 
-		public ElementPresentingDataRow(String id, String article, String name, int quantity = 1, float price = 0,
+		public ElementPresentingDataRow(String id, String article, String name, float quantity = 1, float price = 0,
 										int multiplier = 1, float discount = 0, String usersNotes = "")
 		 
 		{

@@ -56,5 +56,10 @@ namespace ConsolProject
 			return rawRack;
 		}
 
+		public override void generateQueriesList()
+		{
+			this.rawRack.generateTotalQueriesList();
+		}
+
 	}
 }

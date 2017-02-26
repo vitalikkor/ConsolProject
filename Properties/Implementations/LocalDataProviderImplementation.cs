@@ -20,14 +20,12 @@ namespace ConsolProject
 			//	"Initial Catalog=Northwind;Data Source=localhost";
 
 			//SqlDataAdapter dataAdapter = new SqlDataAdapter(this.composeSQLCommand(queries), connectionString);
-
-			IViewPresentingDataRow element = new ElementPresentingDataRow("uniq1", "1222-111-22", 
-			                    queries[0].quryString + " wewe ererere eferer " + queries[0].color.getColorAsString(), quantity: queries[0].quantity);
-			IViewPresentingDataRow element2 = new ElementPresentingDataRow("uniq2", "9999-181-32", 
-			                    queries[0].quryString + " asawewe erasdadsferer" + queries[0].color.getColorAsString(), quantity: queries[0].quantity);
-
-			array.AddRange(new IViewPresentingDataRow[]{ element, element2 });
-
+			foreach (SearchQuery sq in queries)
+			{
+				IViewPresentingDataRow element = new ElementPresentingDataRow("uniq1", "1222-111-22",
+								sq.quryString + " wewe ererere eferer " + sq.color.getColorAsString(), quantity: sq.quantity);
+				array.Add(element);
+			}
 			return array;				
 		}
 

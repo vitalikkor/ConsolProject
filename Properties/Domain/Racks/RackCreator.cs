@@ -15,6 +15,7 @@ namespace ConsolProject
 			rackBuilder.generateRack();
 		}
 
+
 		public Rack getRack()
 		{
 			return rackBuilder.getRack();

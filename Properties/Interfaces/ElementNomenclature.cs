@@ -13,16 +13,23 @@ namespace ConsolProject
 		abstract protected String rootAbriviation { get; }
 
 		// list of elements included this. Usual this is only one item
-		public abstract List<SearchQuery> searchQuerys(int multiplier);
+		public abstract List<SearchQuery> getSearchQuerys();
+
+		public virtual List<SearchQuery> getSatelitsSearchQuerys()
+		{
+			List<SearchQuery> satelitSearchQuerys = new List<SearchQuery>() { };
+			getElementsSatelits().ForEach((ElementNomenclature obj) => satelitSearchQuerys.AddRange(obj.getSearchQuerys()));
+			return satelitSearchQuerys;
+		}
 
 		//color
-		public virtual ColorRall color { get; set;}
+		public virtual ColorRall color { get; set; } = new ColorRall();
 		public abstract void onChangeColor(ColorRall newColor);
 
-		public virtual int selfQuantity { get; set; } = 1;
+		public virtual 	float selfQuantity { get; set; } = 1;
 
 		//Size which using in composing search query
-		public virtual SizeLWH size { get; set; }
+		public virtual SizeLWH size { get; set; } = SizeLWH.Zerro;
 
 		//real material of element it can be unknown
 		protected abstract Material selfMaterial { get; }

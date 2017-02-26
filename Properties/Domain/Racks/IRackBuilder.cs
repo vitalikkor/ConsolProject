@@ -9,6 +9,7 @@ namespace ConsolProject
 		public abstract void generateFrontLegs();
 		public abstract void generateBackLegs();
 		public abstract void generateShelves();
+		public abstract void generateQueriesList();
 
 		public virtual void generateRack()
 		{
@@ -18,6 +19,8 @@ namespace ConsolProject
 			generateFrontLegs();
 			generateBackLegs();
 			generateShelves();
+
+			generateQueriesList();
 		}
 
 		public abstract Rack getRack();

@@ -17,13 +17,13 @@ namespace ConsolProject
 		public float price { get; set; } = 0;
 		public float discount { get; set; } = 0;
 		public string usersNotes { get; set; } = "";
-		public int quantity { get; set; } = 1;
+		public float quantity { get; set; } = 1;
 		public int multiplier { get; set; } = 1;
 
 		public int multipleQuantity
 		{ get
 			{
-				return quantity*multiplier;
+				return Convert.ToInt32(quantity*multiplier);
 			}
 		}
 

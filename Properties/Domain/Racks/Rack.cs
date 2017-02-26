@@ -7,35 +7,29 @@ namespace ConsolProject
 	{
 		public int multiplier { get; set; } = 1;
 		public SizeLWH size;
-		public List<BackPanel> backPanels { get; set;}
-		public List<string> backLegs { get; set; }
-		public List<string> frontLegs { get; set; }
-		public List<string> shelves { get; set;}
-
+		public List<BackPanel> backPanels { get; set; } = new List<BackPanel>();
+		public List<ElementNomenclature> backLegs { get; set; } = new List<ElementNomenclature>();
+		public List<ElementNomenclature> frontLegs { get; set; } = new List<ElementNomenclature>();
+		public List<ElementNomenclature> shelves { get; set; } = new List<ElementNomenclature>();
+		public List<SearchQuery> totalQueriesList { get; set; } = new List<SearchQuery>();
 
 		public List<IViewPresentingDataRow> generateViewPresentingDataRow()
 		{
-			List<IViewPresentingDataRow> rows = new List<IViewPresentingDataRow>();
-			foreach (BackPanel bp in backPanels)
-			{
-				rows.AddRange(bp.generateViewPresentingRow(multiplier));
-			}
 
-			//foreach (string bl in backLegs)
-			//{
-			//	//rows.AddRange(bl.generateViewPresentingRow());
-			//}
+			return ServiceLocator.sharedInstance.getService<IDataProvider>().getElementsTableView(totalQueriesList);
+		}
 
-			//foreach (string bl in frontLegs)
-			//{
-			//	//rows.AddRange(bl.generateViewPresentingRow());
-			//}
+		public void generateTotalQueriesList()
+		{
+			List<ElementNomenclature> totalElementsList = new List<ElementNomenclature>();
+			totalElementsList.AddRange(this.backPanels);
+			totalElementsList.AddRange(this.frontLegs);
+			totalElementsList.AddRange(this.shelves);
 
-			//foreach (string bl in shelves)
-			//{
-			//	//rows.AddRange(bl.generateViewPresentingRow());
-			//}
-			return rows;
+			List<SearchQuery> sqList = new List<SearchQuery>();
+			totalElementsList.ForEach((ElementNomenclature element) => sqList.AddRange(element.getSearchQuerys()));
+
+			totalQueriesList = sqList;
 		}
 	}
 }

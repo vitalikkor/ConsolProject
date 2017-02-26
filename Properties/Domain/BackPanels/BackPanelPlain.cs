@@ -15,26 +15,27 @@ namespace ConsolProject
 		{
 			get { return "KL ST"; }
 		}
-		public override ColorRall color { get; set; }
 
 		protected override Material selfMaterial { get; } = Material.metall;
-
-		public override int selfQuantity { get; set;}
 
 		public BackPanelPlain(SizeLWH panelSize, ColorRall color)
 		{
 			base.size = panelSize;
 			base.color = color;
-			this.color = color;
 		}
 
-		public override List<SearchQuery> searchQuerys(int multiplier)
+		public override List<SearchQuery> getSearchQuerys()
 		{
-				String prefix = "ORDINAL";
-				SearchQuery searchQuery = new SearchQuery(quryString: this.rootAbriviation + " " + 
+			List<SearchQuery> searchQs = getSatelitsSearchQuerys();
+			String prefix = "ORDINAL";
+			//Panel
+			SearchQuery panelSearchQuery = new SearchQuery(quryString: this.rootAbriviation + " " + 
 				                                          size.H.ToString() + " " + size.L.ToString() + " " + prefix + " ", color: this.color);
-				searchQuery.quantity = this.selfQuantity*multiplier;
-				return new List<SearchQuery>() { searchQuery };
+				panelSearchQuery.quantity = this.selfQuantity;
+ 
+			searchQs.Add(panelSearchQuery);
+
+			return searchQs;
 		}
 
 		public static List<BackPanel> getBackPanelsSet(SizeLWH size, ColorRall color)
@@ -83,7 +84,10 @@ namespace ConsolProject
 		protected override List<ElementNomenclature> getElementsSatelits()
 		{
 			//this should be the list of all elements - satelits for each case of panel type
-			return new List<ElementNomenclature>() { };
+			SearchQuery fixatorSearchQuery = new SearchQuery(quryString: "KN FK Back Panel's fixator ", color: new ColorRall(Galvanic.zinc), quantity: 1);
+
+			ElementSatelit fixator = new ElementSatelit(fixatorSearchQuery);
+			return new List<ElementNomenclature>() { fixator };
 		}
 
 		public override void onChangeColor(ColorRall newColor)
@@ -94,7 +98,8 @@ namespace ConsolProject
 
 		public override List<IViewPresentingDataRow> generateViewPresentingRow(int multipleir)
 		{
-			return ServiceLocator.sharedInstance.getService<IDataProvider>().getElementsTableView(this.searchQuerys(multipleir));
+			Console.WriteLine("**************This func can take a lot of time!!!!!!!!");
+			return ServiceLocator.sharedInstance.getService<IDataProvider>().getElementsTableView(this.getSearchQuerys());
 		}
 	}
 }
