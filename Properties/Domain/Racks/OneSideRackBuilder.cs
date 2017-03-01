@@ -61,5 +61,10 @@ namespace ConsolProject
 			this.rawRack.generateTotalQueriesList();
 		}
 
+		public override void generateElementsId()
+		{
+			ServiceLocator.sharedInstance.getService<IDataProvider>().setupElementsId(this.rawRack.generateTotalQueriesList());
+		}
+
 	}
 }

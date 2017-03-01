@@ -16,11 +16,11 @@ namespace ConsolProject
 			RackCreator rackCreator = new RackCreator(oneSideRackBilder);
 			rackCreator.creatRack();
 			Rack oneSideRack = rackCreator.getRack();
-
 			List<IViewPresentingDataRow> rows = oneSideRack.generateViewPresentingDataRow();
+
 			foreach (IViewPresentingDataRow row in rows)
 			{
-				Console.WriteLine(row.article + " " + row.name + " " + row.quantity + "\n");
+				Console.WriteLine(row.getId() + " " + row.getArticle() + " " + row.getName() + " " + row.getQuantity() + "\n");
 
 			}
 

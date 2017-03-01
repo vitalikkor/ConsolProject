@@ -13,6 +13,7 @@ namespace ConsolProject
 			color = query.color;
 			this.size = size;
 			this.material = material;
+			query.callbackId = (string id) => this.elementId = id;
 		}
 
 		public ElementSatelit(SearchQuery query, SizeLWH size)
@@ -21,6 +22,7 @@ namespace ConsolProject
 			color = query.color;
 			this.size = size;
 			this.material = Material.metall;
+			query.callbackId = (string id) => this.elementId = id;
 		}
 
 		public ElementSatelit(SearchQuery query)
@@ -29,12 +31,15 @@ namespace ConsolProject
 			color = query.color;
 			this.size = SizeLWH.Zerro;
 			this.material = Material.metall;
+			query.callbackId = (string id) => this.elementId = id;
 		}
 
 		public override List<IViewPresentingDataRow> generateViewPresentingRow(int multipleir)
 		{
 			Console.WriteLine("**************This func can take a lot of time!!!!!!!!");
-			return ServiceLocator.sharedInstance.getService<IDataProvider>().getElementsTableView(this.getSearchQuerys());
+			List<SearchQuery> queriesList = new List<SearchQuery>();
+			queriesList.Add(this.getSelfSearchQuery());
+			return ServiceLocator.sharedInstance.getService<IDataProvider>().getElementsTableView(queriesList);
 		}
 
 		override protected String rootAbriviation
@@ -44,9 +49,9 @@ namespace ConsolProject
 
 
 		// list of elements included this. Usual this is only one item
-		public override List<SearchQuery> getSearchQuerys()
+		public override SearchQuery getSelfSearchQuery()
 		{
-			return new List<SearchQuery>(){ sQuery };
+			return this.sQuery;
 		}
 
 		public override void onChangeColor(ColorRall newColor)

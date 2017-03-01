@@ -3,45 +3,51 @@ namespace ConsolProject
 {
 	public abstract class IViewPresentingDataRow
 	{
-		public abstract PresentingRowType presentingRowType { get; set;}
+		//public abstract PresentingRowType presentingRowType { get; set;}
 
 		//this id should be unique getting from searching results
-		public abstract string id { get; }
+		public abstract string getId();
 
 		//article getting from searching results
-		public abstract string article { get; }
+		public abstract string getArticle();
 
 		//article getting from searching results
-		public abstract string name { get; }
+		public abstract string getName();
 
-		public float price { get; set; } = 0;
-		public float discount { get; set; } = 0;
-		public string usersNotes { get; set; } = "";
-		public float quantity { get; set; } = 1;
-		public int multiplier { get; set; } = 1;
+		public abstract float getUnitPrice();
 
-		public int multipleQuantity
-		{ get
-			{
-				return Convert.ToInt32(quantity*multiplier);
-			}
+		public abstract float getDiscount();
+
+		public abstract string getUsersNotes();
+
+		public abstract float getQuantity();
+
+		public abstract float getMultiplier();
+
+
+		public int getMultipleQuantity()
+		{ 
+			return Convert.ToInt32(getQuantity()*getMultiplier());
 		}
 
-		public virtual float getPrice()
+		public virtual float getPricePerQuantity()
 		{
-			return quantity*price;
+			return getQuantity()*getUnitPrice();
 		}
+
 		public virtual float getMultiplePrice()
 		{
-			return multipleQuantity * price;
+			return getMultipleQuantity() * getUnitPrice();
 		}
+
 		public virtual float getDiscountPrice()
 		{
-			return price*discount/100;
+			return getUnitPrice()*(1-getDiscount())/100;
 		}
+
 		public virtual float getMultipleDiscountPrice()
 		{
-			return multiplier * price * discount / 100;
+			return getMultipleQuantity() * getUnitPrice() * (1 - getDiscount()) / 100;
 		}
 	}
 }

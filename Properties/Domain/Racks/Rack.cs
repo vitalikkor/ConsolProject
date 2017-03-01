@@ -11,25 +11,54 @@ namespace ConsolProject
 		public List<ElementNomenclature> backLegs { get; set; } = new List<ElementNomenclature>();
 		public List<ElementNomenclature> frontLegs { get; set; } = new List<ElementNomenclature>();
 		public List<ElementNomenclature> shelves { get; set; } = new List<ElementNomenclature>();
-		public List<SearchQuery> totalQueriesList { get; set; } = new List<SearchQuery>();
 
 		public List<IViewPresentingDataRow> generateViewPresentingDataRow()
 		{
 
-			return ServiceLocator.sharedInstance.getService<IDataProvider>().getElementsTableView(totalQueriesList);
+			return ServiceLocator.sharedInstance.getService<IDataProvider>().getElementsTableView(generateTotalElementsList());
 		}
 
-		public void generateTotalQueriesList()
+		public List<SearchQuery> generateTotalQueriesList()
+		{
+			List<ElementNomenclature> totalElementsList = generateTotalElementsList();
+
+			List<SearchQuery> sqList = new List<SearchQuery>();
+			totalElementsList.ForEach((ElementNomenclature element) =>
+			{
+				sqList.Add(element.getSelfSearchQuery());
+			});
+
+			return sqList;
+		}
+
+		public List<ElementNomenclature> generateTotalElementsList()
 		{
 			List<ElementNomenclature> totalElementsList = new List<ElementNomenclature>();
 			totalElementsList.AddRange(this.backPanels);
 			totalElementsList.AddRange(this.frontLegs);
 			totalElementsList.AddRange(this.shelves);
+			//getting subelements and satelits
+			List<ElementNomenclature> additionalList = new List<ElementNomenclature>();
+			//recursive func
+			Func<ElementNomenclature, List < ElementNomenclature >> getSubelements = delegate (ElementNomenclature element)
+			   {
+					return element.getSubElements();
+			   };
+			//loop and invoke recursive func
+			totalElementsList.ForEach((ElementNomenclature element) =>
+			{
+				additionalList.AddRange(element.getSatelitsElements());
 
-			List<SearchQuery> sqList = new List<SearchQuery>();
-			totalElementsList.ForEach((ElementNomenclature element) => sqList.AddRange(element.getSearchQuerys()));
+				getSubelements(element).ForEach((ElementNomenclature subelement) =>
+				{
+					additionalList.AddRange(getSubelements(subelement));
+				});
 
-			totalQueriesList = sqList;
+			});
+			totalElementsList.AddRange(additionalList);
+			return totalElementsList;
 		}
+
+
 	}
 }

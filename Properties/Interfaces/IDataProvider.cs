@@ -7,6 +7,10 @@ namespace ConsolProject
 {
 	public interface IDataProvider
 	{
+		void setupElementsId(List<SearchQuery> queries);
+		                          
 		List<IViewPresentingDataRow> getElementsTableView(List<SearchQuery> query);
+
+		List<IViewPresentingDataRow> getElementsTableView(List<ElementNomenclature> elementsList);
 	}
 }

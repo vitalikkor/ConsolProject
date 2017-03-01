@@ -9,7 +9,7 @@ namespace ConsolProject
 		//BackPanel properties
 		public override BackPanelsFamily family { get; } = BackPanelsFamily.ordinal;
 		public override BackPanelType type { get; } = BackPanelType.plain;
-
+	
 		//ElementNomenclature properties
 		override protected String rootAbriviation
 		{
@@ -24,18 +24,14 @@ namespace ConsolProject
 			base.color = color;
 		}
 
-		public override List<SearchQuery> getSearchQuerys()
+		public override SearchQuery getSelfSearchQuery()
 		{
-			List<SearchQuery> searchQs = getSatelitsSearchQuerys();
 			String prefix = "ORDINAL";
 			//Panel
 			SearchQuery panelSearchQuery = new SearchQuery(quryString: this.rootAbriviation + " " + 
 				                                          size.H.ToString() + " " + size.L.ToString() + " " + prefix + " ", color: this.color);
-				panelSearchQuery.quantity = this.selfQuantity;
- 
-			searchQs.Add(panelSearchQuery);
-
-			return searchQs;
+			panelSearchQuery.callbackId = (string id) => this.elementId = id;
+			return panelSearchQuery;
 		}
 
 		public static List<BackPanel> getBackPanelsSet(SizeLWH size, ColorRall color)
@@ -81,14 +77,6 @@ namespace ConsolProject
 			return setOfHeights;
 		}
 
-		protected override List<ElementNomenclature> getElementsSatelits()
-		{
-			//this should be the list of all elements - satelits for each case of panel type
-			SearchQuery fixatorSearchQuery = new SearchQuery(quryString: "KN FK Back Panel's fixator ", color: new ColorRall(Galvanic.zinc), quantity: 1);
-
-			ElementSatelit fixator = new ElementSatelit(fixatorSearchQuery);
-			return new List<ElementNomenclature>() { fixator };
-		}
 
 		public override void onChangeColor(ColorRall newColor)
 		{
@@ -96,10 +84,20 @@ namespace ConsolProject
 
 		}
 
+		public override List<ElementNomenclature> getSatelitsElements()
+		{
+			SearchQuery fixatorSearchQuery = new SearchQuery(quryString: "KN FK Back Panel's fixator ", color: new ColorRall(Galvanic.zinc), searchType: PreferedSearchType.byName);
+
+			ElementNomenclature satelit = new ElementSatelit(fixatorSearchQuery);
+
+			return new List< ElementNomenclature >(){satelit};
+		}
+
 		public override List<IViewPresentingDataRow> generateViewPresentingRow(int multipleir)
 		{
 			Console.WriteLine("**************This func can take a lot of time!!!!!!!!");
-			return ServiceLocator.sharedInstance.getService<IDataProvider>().getElementsTableView(this.getSearchQuerys());
+			List<SearchQuery> listQueries = new List<SearchQuery>() { this.getSelfSearchQuery()};
+			return ServiceLocator.sharedInstance.getService<IDataProvider>().getElementsTableView(listQueries);
 		}
 	}
 }
