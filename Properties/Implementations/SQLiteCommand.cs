@@ -1,0 +1,6 @@
+﻿namespace ConsolProject
+{
+	class SQLiteCommand
+	{
+	}
+}

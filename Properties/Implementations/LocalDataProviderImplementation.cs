@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Xml;
 using System.Data.SqlClient;
+using Mono.Data.Sqlite;
 using System.Collections.Generic;
 
 namespace ConsolProject
@@ -13,6 +14,31 @@ namespace ConsolProject
 
 		void IDataProvider.setupElementsId(List<SearchQuery> queries)
 		{
+			const string connectionString = "URI=file:/Users/vkorobitsyn/Documents/Projects/C#projects/ConsolProject/ConsolProject/mainDataBase.db";
+			IDbConnection dbcon = new SqliteConnection(connectionString);
+			dbcon.Open();
+			IDbCommand dbcmd = dbcon.CreateCommand();
+
+			string sql = "SELECT Element_Id, LocalizedName  FROM NamesTranslation WHERE Language_Id = 0 AND LocalizedName LIKE '%" + queries[0].quryString + "%'";
+			dbcmd.CommandText = sql;
+			IDataReader reader = dbcmd.ExecuteReader();
+			while (reader.Read())
+			{
+				string name1 = reader.GetString(0);
+				string name2 = reader.GetString(1);
+				//int name1 = reader.GetInt32(0);
+				//string name2 = reader.GetString(1);
+				//int name3 = reader.GetInt32(2);
+				//string name4 = reader.GetString(3);
+				//string name5 = reader.GetString(4);
+				//Console.WriteLine("Name: {0} {1} {2} {3} {4}", name1, name2, name3, name4, name5);
+				Console.WriteLine(name1 + " " + name2);
+			}
+			// clean up
+			reader.Dispose();
+			dbcmd.Dispose();
+			dbcon.Close();
+
 			int i = 0;
 			foreach (SearchQuery sq in queries)
 			{

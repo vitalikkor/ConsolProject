@@ -13,7 +13,7 @@ namespace ConsolProject
 		//ElementNomenclature properties
 		override protected String rootAbriviation
 		{
-			get { return "KL ST"; }
+			get { return "КМ СТ"; }
 		}
 
 		protected override Material selfMaterial { get; } = Material.metall;
@@ -26,10 +26,10 @@ namespace ConsolProject
 
 		public override SearchQuery getSelfSearchQuery()
 		{
-			String prefix = "ORDINAL";
+			String prefix = "";
 			//Panel
 			SearchQuery panelSearchQuery = new SearchQuery(quryString: this.rootAbriviation + " " + 
-				                                          size.H.ToString() + " " + size.L.ToString() + " " + prefix + " ", color: this.color);
+				                                          size.H.ToString() + " " + size.L.ToString() + " " + prefix, color: this.color);
 			panelSearchQuery.callbackId = (string id) => this.elementId = id;
 			return panelSearchQuery;
 		}
